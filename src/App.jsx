@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Phone, Mail, MapPin, Paintbrush, Home, Building2, ArrowRight, Star, CheckCircle2, Instagram, Facebook } from 'lucide-react';
+import { Phone, Mail, MapPin, Paintbrush, Home, Building2, ArrowRight, Star, CheckCircle2, Instagram, Facebook, ShieldCheck } from 'lucide-react';
 
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -7,31 +7,39 @@ function App() {
   return (
     <div className="min-h-screen bg-surface font-sans text-gray-900">
       {/* Header */}
-      <header className="bg-white sticky top-0 z-50 border-b-4 border-secondary">
+      <header className="bg-white sticky top-0 z-50 border-b-4 border-secondary shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-20">
-            <div className="flex items-center gap-2">
+          <div className="flex justify-between items-center h-24">
+            <div className="flex items-center gap-3">
               {/* Petit rappel drapeau catalan stylisé */}
-              <div className="flex flex-col h-8 justify-between py-1">
+              <div className="flex flex-col h-10 justify-between py-1">
                 <div className="w-1 h-full bg-primary"></div>
                 <div className="w-1 h-full bg-secondary"></div>
                 <div className="w-1 h-full bg-primary"></div>
                 <div className="w-1 h-full bg-secondary"></div>
               </div>
-              <a href="#" className="text-2xl font-serif font-bold text-primary tracking-tight">
+              <a href="#" className="text-3xl font-serif font-bold text-primary tracking-tight">
                 PERPIGNAN<span className="text-secondary">PEINTURE</span>
               </a>
             </div>
 
             {/* Desktop Nav */}
-            <nav className="hidden md:flex space-x-8 items-center">
-              <a href="#residentiel" className="text-sm font-medium text-gray-600 hover:text-primary transition uppercase tracking-wider">Résidentiel</a>
-              <a href="#commercial" className="text-sm font-medium text-gray-600 hover:text-primary transition uppercase tracking-wider">Commercial</a>
-              <a href="#approche" className="text-sm font-medium text-gray-600 hover:text-primary transition uppercase tracking-wider">Notre Approche</a>
-              <a href="#contact" className="bg-primary text-white px-6 py-3 rounded-none hover:bg-primary-dark transition text-sm font-semibold tracking-wide">
+            <div className="hidden md:flex items-center space-x-8">
+              <nav className="flex space-x-6">
+                <a href="#residentiel" className="text-sm font-bold text-gray-700 hover:text-primary transition uppercase tracking-wider">RÉSIDENTIEL</a>
+                <a href="#commercial" className="text-sm font-bold text-gray-700 hover:text-primary transition uppercase tracking-wider">COMMERCIAL</a>
+                <a href="#realisations" className="text-sm font-bold text-gray-700 hover:text-primary transition uppercase tracking-wider">RÉALISATIONS</a>
+              </nav>
+              <div className="flex flex-col items-end">
+                <div className="flex items-center gap-2 text-gray-900 font-bold text-lg">
+                  <Phone className="w-5 h-5 text-secondary fill-current" />
+                  04 68 XX XX XX
+                </div>
+              </div>
+              <a href="#contact" className="bg-secondary text-gray-900 px-6 py-3 font-bold rounded hover:bg-secondary-light transition shadow-md text-sm tracking-wide">
                 DEMANDER UN DEVIS
               </a>
-            </nav>
+            </div>
 
             {/* Mobile Menu Button */}
             <div className="md:hidden">
@@ -49,9 +57,9 @@ function App() {
         {isMenuOpen && (
           <div className="md:hidden bg-white border-t border-gray-100">
             <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-              <a href="#residentiel" className="block px-3 py-2 text-base font-medium text-gray-700 hover:text-primary hover:bg-gray-50">Résidentiel</a>
-              <a href="#commercial" className="block px-3 py-2 text-base font-medium text-gray-700 hover:text-primary hover:bg-gray-50">Commercial</a>
-              <a href="#approche" className="block px-3 py-2 text-base font-medium text-gray-700 hover:text-primary hover:bg-gray-50">Notre Approche</a>
+              <a href="#residentiel" className="block px-3 py-2 text-base font-medium text-gray-700 hover:text-primary hover:bg-gray-50">RÉSIDENTIEL</a>
+              <a href="#commercial" className="block px-3 py-2 text-base font-medium text-gray-700 hover:text-primary hover:bg-gray-50">COMMERCIAL</a>
+              <a href="#realisations" className="block px-3 py-2 text-base font-medium text-gray-700 hover:text-primary hover:bg-gray-50">RÉALISATIONS</a>
               <a href="#contact" className="block px-3 py-2 text-base font-medium text-primary font-bold">Demander un devis</a>
             </div>
           </div>
@@ -59,29 +67,53 @@ function App() {
       </header>
 
       {/* Hero Section */}
-      <section className="relative bg-primary-dark text-white overflow-hidden">
+      <section className="relative bg-gray-900 text-white overflow-hidden min-h-[calc(100vh-6rem)] flex items-center">
         <div
-          className="absolute inset-0 bg-cover bg-center opacity-30"
-          style={{ backgroundImage: "url('https://images.unsplash.com/photo-1589939705384-5185137a7f0f?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80')" }}
+          className="absolute inset-0 bg-cover bg-center"
+          style={{ backgroundImage: "url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80')" }}
         ></div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32 md:py-48 text-center">
-          <h1 className="text-4xl md:text-6xl font-serif font-bold mb-6 leading-tight">
-            L'Art de la Peinture <br/> <span className="text-secondary italic">en Pays Catalan</span>
+        <div className="absolute inset-0 bg-black/60"></div>
+
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
+          <h1 className="text-4xl md:text-6xl font-serif font-bold mb-6 leading-tight text-white">
+            PERPIGNAN PEINTURE : <br/> Votre Artisan Local de Confiance
           </h1>
-          <p className="text-lg md:text-xl mb-10 text-gray-200 max-w-2xl mx-auto font-light">
-            Nous transformons vos espaces avec élégance et précision. Une expertise artisanale pour des intérieurs qui vous ressemblent.
+          <p className="text-lg md:text-2xl mb-10 text-gray-100 max-w-3xl mx-auto font-light">
+            Spécialiste en rénovation intérieure et ravalement de façade à Perpignan et dans les Pyrénées-Orientales. <span className="font-bold text-secondary">Devis gratuit sous 48h.</span>
           </p>
-          <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <a href="#contact" className="bg-secondary text-primary-dark px-8 py-4 rounded-none font-bold hover:bg-white transition tracking-wide">
-              ESTIMATION GRATUITE
+
+          <div className="flex flex-col sm:flex-row justify-center gap-4 mb-12">
+            <a href="#contact" className="bg-primary text-white px-8 py-4 rounded font-bold text-lg hover:bg-primary-light transition shadow-lg flex items-center justify-center gap-2">
+              👉 Demander Mon Devis Gratuit
             </a>
-            <a href="#residentiel" className="border border-white text-white px-8 py-4 rounded-none font-bold hover:bg-white hover:text-primary-dark transition tracking-wide">
-              NOS RÉALISATIONS
+            <a href="#realisations" className="bg-white text-gray-900 border-2 border-white px-8 py-4 rounded font-bold text-lg hover:bg-gray-100 transition shadow-lg">
+              Voir Nos Réalisations
             </a>
+          </div>
+
+          {/* Social Proof */}
+          <div className="flex flex-wrap justify-center gap-8 md:gap-12 text-sm md:text-base font-medium text-white/90">
+            <div className="flex items-center gap-2">
+              <div className="flex text-secondary">
+                <Star className="w-5 h-5 fill-current" />
+                <Star className="w-5 h-5 fill-current" />
+                <Star className="w-5 h-5 fill-current" />
+                <Star className="w-5 h-5 fill-current" />
+                <Star className="w-5 h-5 fill-current" />
+              </div>
+              <span>4.9/5 Étoiles Google</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <CheckCircle2 className="w-6 h-6 text-secondary" />
+              <span>+250 Chantiers Réussis</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <ShieldCheck className="w-6 h-6 text-secondary" />
+              <span>Garantie Décennale</span>
+            </div>
           </div>
         </div>
       </section>
-
       {/* Split Section: Residential vs Commercial */}
       <section className="grid md:grid-cols-2">
         <div id="residentiel" className="relative group h-96 md:h-[600px] overflow-hidden">
