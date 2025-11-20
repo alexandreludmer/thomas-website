@@ -1,53 +1,59 @@
 import React, { useState } from 'react';
-import { Phone, Mail, MapPin, Paintbrush, Home, Building2, ArrowRight, Star, CheckCircle2, Instagram, Facebook, ShieldCheck } from 'lucide-react';
+import { Phone, Mail, MapPin, Paintbrush, Home, Shield, ArrowRight, Star, CheckCircle2, Instagram, Facebook, Menu, X, Droplets } from 'lucide-react';
+import { motion } from 'framer-motion';
+import BeforeAfterSlider from './components/BeforeAfterSlider';
 
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+  const fadeInUp = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
+  };
+
+  const staggerContainer = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2
+      }
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-surface font-sans text-gray-900">
-      {/* Header */}
-      <header className="bg-white sticky top-0 z-50 border-b-4 border-secondary shadow-sm">
+    <div className="min-h-screen bg-surface font-sans text-text selection:bg-secondary selection:text-white">
+      {/* A. Header / Navigation (Sticky) */}
+      <header className="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-md border-b border-gray-100 shadow-sm transition-all duration-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-24">
+          <div className="flex justify-between items-center h-20">
+            {/* Logo */}
             <div className="flex items-center gap-3">
-              {/* Petit rappel drapeau catalan stylisé */}
-              <div className="flex flex-col h-10 justify-between py-1">
-                <div className="w-1 h-full bg-primary"></div>
-                <div className="w-1 h-full bg-secondary"></div>
-                <div className="w-1 h-full bg-primary"></div>
-                <div className="w-1 h-full bg-secondary"></div>
+              <div className="bg-primary p-2 rounded-lg">
+                <Paintbrush className="w-6 h-6 text-secondary" />
               </div>
-              <a href="#" className="text-3xl font-serif font-bold text-primary tracking-tight">
-                PERPIGNAN<span className="text-secondary">PEINTURE</span>
+              <a href="#" className="text-xl md:text-2xl font-heading font-bold text-primary tracking-tight">
+                PERPIGNAN PEINTURE
               </a>
             </div>
 
             {/* Desktop Nav */}
-            <div className="hidden md:flex items-center space-x-8">
-              <nav className="flex space-x-6">
-                <a href="#residentiel" className="text-sm font-bold text-gray-700 hover:text-primary transition uppercase tracking-wider">RÉSIDENTIEL</a>
-                <a href="#commercial" className="text-sm font-bold text-gray-700 hover:text-primary transition uppercase tracking-wider">COMMERCIAL</a>
-                <a href="#realisations" className="text-sm font-bold text-gray-700 hover:text-primary transition uppercase tracking-wider">RÉALISATIONS</a>
-              </nav>
-              <div className="flex flex-col items-end">
-                <div className="flex items-center gap-2 text-gray-900 font-bold text-lg">
-                  <Phone className="w-5 h-5 text-secondary fill-current" />
-                  04 68 XX XX XX
-                </div>
-              </div>
-              <a href="#contact" className="bg-secondary text-gray-900 px-6 py-3 font-bold rounded hover:bg-secondary-light transition shadow-md text-sm tracking-wide">
-                DEMANDER UN DEVIS
+            <nav className="hidden md:flex items-center space-x-8">
+              <a href="#accueil" className="text-sm font-medium text-text hover:text-secondary transition">Accueil</a>
+              <a href="#expertises" className="text-sm font-medium text-text hover:text-secondary transition">Expertises</a>
+              <a href="#realisations" className="text-sm font-medium text-text hover:text-secondary transition">Réalisations</a>
+              <a href="#assurances" className="text-sm font-medium text-text hover:textsecondary transition">Assurances</a>
+              <a href="#contact" className="text-sm font-medium text-text hover:text-secondary transition">Contact</a>
+
+              <a href="#contact" className="bg-secondary text-white px-6 py-3 rounded-full font-bold hover:bg-secondary-light transition shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 duration-200 text-sm tracking-wide">
+                Demander un Devis
               </a>
-            </div>
+            </nav>
 
             {/* Mobile Menu Button */}
             <div className="md:hidden">
-              <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="text-gray-600 hover:text-primary">
-                <span className="sr-only">Menu</span>
-                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                </svg>
+              <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="text-text hover:text-primary p-2">
+                {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
               </button>
             </div>
           </div>
@@ -55,240 +61,228 @@ function App() {
 
         {/* Mobile Menu */}
         {isMenuOpen && (
-          <div className="md:hidden bg-white border-t border-gray-100">
-            <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-              <a href="#residentiel" className="block px-3 py-2 text-base font-medium text-gray-700 hover:text-primary hover:bg-gray-50">RÉSIDENTIEL</a>
-              <a href="#commercial" className="block px-3 py-2 text-base font-medium text-gray-700 hover:text-primary hover:bg-gray-50">COMMERCIAL</a>
-              <a href="#realisations" className="block px-3 py-2 text-base font-medium text-gray-700 hover:text-primary hover:bg-gray-50">RÉALISATIONS</a>
-              <a href="#contact" className="block px-3 py-2 text-base font-medium text-primary font-bold">Demander un devis</a>
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            className="md:hidden bg-white border-t border-gray-100 overflow-hidden"
+          >
+            <div className="px-4 pt-4 pb-6 space-y-2">
+              <a href="#accueil" onClick={() => setIsMenuOpen(false)} className="block px-3 py-3 text-base font-medium text-text hover:text-secondary hover:bg-gray-50 rounded-lg">Accueil</a>
+              <a href="#expertises" onClick={() => setIsMenuOpen(false)} className="block px-3 py-3 text-base font-medium text-text hover:text-secondary hover:bg-gray-50 rounded-lg">Expertises</a>
+              <a href="#realisations" onClick={() => setIsMenuOpen(false)} className="block px-3 py-3 text-base font-medium text-text hover:text-secondary hover:bg-gray-50 rounded-lg">Réalisations</a>
+              <a href="#assurances" onClick={() => setIsMenuOpen(false)} className="block px-3 py-3 text-base font-medium text-text hover:text-secondary hover:bg-gray-50 rounded-lg">Assurances</a>
+              <a href="#contact" onClick={() => setIsMenuOpen(false)} className="block px-3 py-3 text-base font-bold text-secondary bg-gray-50 rounded-lg mt-4">Demander un Devis</a>
             </div>
-          </div>
+          </motion.div>
         )}
       </header>
 
-      {/* Hero Section */}
-      <section className="relative bg-gray-900 text-white overflow-hidden min-h-[calc(100vh-6rem)] flex items-center">
+      {/* B. Hero Section (Above the Fold) */}
+      <section id="accueil" className="relative pt-20 min-h-screen flex items-center overflow-hidden">
+        {/* Background Image */}
         <div
-          className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: "url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80')" }}
+          className="absolute inset-0 bg-cover bg-center z-0"
+          style={{ backgroundImage: "url('https://images.unsplash.com/photo-1562663474-6cbb3eaa4d14?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80')" }}
         ></div>
-        <div className="absolute inset-0 bg-black/60"></div>
+        {/* Overlay */}
+        <div className="absolute inset-0 bg-primary/40 z-10"></div>
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
-          <h1 className="text-4xl md:text-6xl font-serif font-bold mb-6 leading-tight text-white">
-            PERPIGNAN PEINTURE : <br/> Votre Artisan Local de Confiance
-          </h1>
-          <p className="text-lg md:text-2xl mb-10 text-gray-100 max-w-3xl mx-auto font-light">
-            Spécialiste en rénovation intérieure et ravalement de façade à Perpignan et dans les Pyrénées-Orientales. <span className="font-bold text-secondary">Devis gratuit sous 48h.</span>
-          </p>
+        <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center md:text-left">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={staggerContainer}
+            className="max-w-3xl"
+          >
+            <motion.h1 variants={fadeInUp} className="text-4xl md:text-6xl lg:text-7xl font-heading font-bold text-white mb-6 leading-tight">
+              L'Art de la Peinture <br/> & de la Rénovation <br/> <span className="text-secondary">à Perpignan.</span>
+            </motion.h1>
 
-          <div className="flex flex-col sm:flex-row justify-center gap-4 mb-12">
-            <a href="#contact" className="bg-primary text-white px-8 py-4 rounded font-bold text-lg hover:bg-primary-light transition shadow-lg flex items-center justify-center gap-2">
-              👉 Demander Mon Devis Gratuit
-            </a>
-            <a href="#realisations" className="bg-white text-gray-900 border-2 border-white px-8 py-4 rounded font-bold text-lg hover:bg-gray-100 transition shadow-lg">
-              Voir Nos Réalisations
-            </a>
+            <motion.p variants={fadeInUp} className="text-lg md:text-2xl text-gray-200 mb-10 font-light leading-relaxed max-w-2xl">
+              Finitions haut de gamme et remise en état après sinistre. <br/>
+              L'excellence artisanale au service de votre intérieur.
+            </motion.p>
+
+            <motion.div variants={fadeInUp} className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+              <a href="#contact" className="bg-secondary text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-secondary-light transition shadow-xl hover:shadow-2xl transform hover:-translate-y-1 duration-300 flex items-center justify-center gap-2">
+                Demander un Devis <ArrowRight className="w-5 h-5" />
+              </a>
+              <a href="#realisations" className="bg-white/10 backdrop-blur-sm border border-white/30 text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-white/20 transition flex items-center justify-center">
+                Voir nos Réalisations
+              </a>
+            </motion.div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* C. The "Insurance Trust" Bar */}
+      <section id="assurances" className="bg-gray-100 border-b border-gray-200 py-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-8">
+            <p className="text-text-light font-medium text-sm md:text-base uppercase tracking-wider text-center md:text-left">
+              Nous intervenons pour vos dossiers <span className="text-primary font-bold">Assurances & Sinistres</span>
+            </p>
+            <div className="flex flex-wrap justify-center gap-8 md:gap-12 opacity-60 grayscale hover:grayscale-0 hover:opacity-100 transition-all duration-500">
+              {/* Placeholder Logos using text for now, ideally SVGs */}
+              <span className="font-heading font-bold text-xl text-gray-500">AXA</span>
+              <span className="font-heading font-bold text-xl text-gray-500">ALLIANZ</span>
+              <span className="font-heading font-bold text-xl text-gray-500">MAAF</span>
+              <span className="font-heading font-bold text-xl text-gray-500">GMF</span>
+              <span className="font-heading font-bold text-xl text-gray-500">GROUPAMA</span>
+            </div>
           </div>
+        </div>
+      </section>
 
-          {/* Social Proof */}
-          <div className="flex flex-wrap justify-center gap-8 md:gap-12 text-sm md:text-base font-medium text-white/90">
-            <div className="flex items-center gap-2">
-              <div className="flex text-secondary">
-                <Star className="w-5 h-5 fill-current" />
-                <Star className="w-5 h-5 fill-current" />
-                <Star className="w-5 h-5 fill-current" />
-                <Star className="w-5 h-5 fill-current" />
-                <Star className="w-5 h-5 fill-current" />
+      {/* D. Services Grid (Bento Grid Layout) */}
+      <section id="expertises" className="py-24 bg-surface">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={fadeInUp}
+            className="text-center mb-16"
+          >
+            <h2 className="text-3xl md:text-4xl font-heading font-bold text-primary mb-4">Nos Domaines d'Expertise</h2>
+            <p className="text-text-light max-w-2xl mx-auto">Une approche globale pour sublimer et protéger votre patrimoine.</p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {/* Card 1: Peinture Décorative */}
+            <motion.div
+              whileHover={{ y: -10 }}
+              className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-50"
+            >
+              <div className="w-14 h-14 bg-blue-50 rounded-2xl flex items-center justify-center mb-6">
+                <Paintbrush className="w-8 h-8 text-primary" />
               </div>
-              <span>4.9/5 Étoiles Google</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <CheckCircle2 className="w-6 h-6 text-secondary" />
-              <span>+250 Chantiers Réussis</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <ShieldCheck className="w-6 h-6 text-secondary" />
-              <span>Garantie Décennale</span>
-            </div>
-          </div>
-        </div>
-      </section>
-      {/* Split Section: Residential vs Commercial */}
-      <section className="grid md:grid-cols-2">
-        <div id="residentiel" className="relative group h-96 md:h-[600px] overflow-hidden">
-          <div
-            className="absolute inset-0 bg-cover bg-center transition duration-700 group-hover:scale-110"
-            style={{ backgroundImage: "url('https://images.unsplash.com/photo-1616486338812-3dadae4b4f9d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80')" }}
-          ></div>
-          <div className="absolute inset-0 bg-primary-dark/60 group-hover:bg-primary-dark/50 transition duration-500"></div>
-          <div className="absolute inset-0 flex flex-col justify-center items-center text-white p-8 text-center">
-            <Home className="w-12 h-12 mb-4 text-secondary" />
-            <h2 className="text-3xl font-serif font-bold mb-4">Résidentiel</h2>
-            <p className="max-w-md mb-8 text-gray-200">
-              De la chambre au salon, nous créons des ambiances chaleureuses et personnalisées pour votre maison.
-            </p>
-            <a href="#contact" className="inline-flex items-center text-sm font-bold uppercase tracking-widest hover:text-secondary transition">
-              En savoir plus <ArrowRight className="ml-2 w-4 h-4" />
-            </a>
-          </div>
-        </div>
-        <div id="commercial" className="relative group h-96 md:h-[600px] overflow-hidden">
-          <div
-            className="absolute inset-0 bg-cover bg-center transition duration-700 group-hover:scale-110"
-            style={{ backgroundImage: "url('https://images.unsplash.com/photo-1497366216548-37526070297c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80')" }}
-          ></div>
-          <div className="absolute inset-0 bg-gray-900/60 group-hover:bg-gray-900/50 transition duration-500"></div>
-          <div className="absolute inset-0 flex flex-col justify-center items-center text-white p-8 text-center">
-            <Building2 className="w-12 h-12 mb-4 text-secondary" />
-            <h2 className="text-3xl font-serif font-bold mb-4">Commercial</h2>
-            <p className="max-w-md mb-8 text-gray-200">
-              Bureaux, boutiques, restaurants. Nous valorisons votre image de marque à travers des finitions impeccables.
-            </p>
-            <a href="#contact" className="inline-flex items-center text-sm font-bold uppercase tracking-widest hover:text-secondary transition">
-              En savoir plus <ArrowRight className="ml-2 w-4 h-4" />
-            </a>
+              <h3 className="text-xl font-heading font-bold text-primary mb-3">Peinture Décorative</h3>
+              <p className="text-text-light leading-relaxed">
+                Création d'ambiances uniques, effets de matière, stucs et finitions haut de gamme pour un intérieur qui vous ressemble.
+              </p>
+            </motion.div>
+
+            {/* Card 2: Rénovation & Façades */}
+            <motion.div
+              whileHover={{ y: -10 }}
+              className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-50 md:mt-8"
+            >
+              <div className="w-14 h-14 bg-yellow-50 rounded-2xl flex items-center justify-center mb-6">
+                <Home className="w-8 h-8 text-secondary" />
+              </div>
+              <h3 className="text-xl font-heading font-bold text-primary mb-3">Rénovation & Façades</h3>
+              <p className="text-text-light leading-relaxed">
+                Ravalement de façade, traitement des fissures et protection durable de vos murs extérieurs contre les intempéries.
+              </p>
+            </motion.div>
+
+            {/* Card 3: Sinistres */}
+            <motion.div
+              whileHover={{ y: -10 }}
+              className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-50"
+            >
+              <div className="w-14 h-14 bg-red-50 rounded-2xl flex items-center justify-center mb-6">
+                <Droplets className="w-8 h-8 text-red-500" />
+              </div>
+              <h3 className="text-xl font-heading font-bold text-primary mb-3">Sinistres & Dégâts des Eaux</h3>
+              <p className="text-text-light leading-relaxed">
+                Intervention rapide et soignée pour la remise en état après sinistre. Gestion simplifiée avec votre assurance.
+              </p>
+            </motion.div>
           </div>
         </div>
       </section>
 
-      {/* Our Approach / Why Us */}
-      <section id="approche" className="py-24 bg-white">
+      {/* E. Portfolio Feature: "Before/After" Slider */}
+      <section id="realisations" className="py-24 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={fadeInUp}
+            className="text-center mb-16"
+          >
+            <h2 className="text-3xl md:text-4xl font-heading font-bold text-primary mb-4">La Preuve par l'Image</h2>
+            <p className="text-text-light max-w-2xl mx-auto">Découvrez la qualité de nos finitions à travers nos transformations.</p>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+          >
+            <BeforeAfterSlider
+              beforeImage="https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" // Construction/Messy
+              afterImage="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" // Clean/Modern
+            />
+          </motion.div>
+        </div>
+      </section>
+
+      {/* F. Testimonials & CTA */}
+      <section className="py-24 bg-surface overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <span className="text-secondary font-bold tracking-widest uppercase text-sm">Pourquoi nous choisir</span>
-            <h2 className="text-4xl font-serif font-bold text-primary mt-2 mb-6">Notre Approche</h2>
-            <p className="text-gray-600 max-w-2xl mx-auto">
-              Nous allions techniques traditionnelles et produits modernes pour un résultat durable et respectueux de l'environnement.
-            </p>
+            <div className="flex justify-center gap-1 mb-4">
+              {[1, 2, 3, 4, 5].map((star) => (
+                <Star key={star} className="w-6 h-6 text-secondary fill-current" />
+              ))}
+            </div>
+            <h2 className="text-3xl md:text-4xl font-serif italic text-primary mb-8">
+              "Un travail d'orfèvre. L'équipe a su redonner vie à notre salon avec une propreté exemplaire."
+            </h2>
+            <p className="font-bold text-text">Sophie & Marc L.</p>
+            <p className="text-sm text-text-light">Propriétaires à Canet-en-Roussillon</p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-12">
-            <FeatureCard
-              icon={<Paintbrush className="w-8 h-8 text-secondary" />}
-              title="Finitions Soignées"
-              description="Le souci du détail est notre signature. Nous préparons méticuleusement chaque surface pour un rendu parfait."
-            />
-            <FeatureCard
-              icon={<CheckCircle2 className="w-8 h-8 text-secondary" />}
-              title="Produits Écologiques"
-              description="Nous privilégions des peintures à faible teneur en COV, respectueuses de votre santé et de l'environnement."
-            />
-            <FeatureCard
-              icon={<Star className="w-8 h-8 text-secondary" />}
-              title="Satisfaction Garantie"
-              description="Un chantier propre, des délais respectés et une communication transparente tout au long du projet."
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* Contact Section */}
-      <section id="contact" className="py-24 bg-surface">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-white shadow-xl overflow-hidden">
-            <div className="grid md:grid-cols-2">
-              <div className="p-12 bg-primary text-white">
-                <h2 className="text-3xl font-serif font-bold mb-6">Parlons de votre projet</h2>
-                <p className="text-blue-100 mb-12">
-                  Remplissez le formulaire ou contactez-nous directement. Nous nous ferons un plaisir de vous répondre sous 24h.
-                </p>
-
-                <div className="space-y-8">
-                  <div className="flex items-start space-x-4">
-                    <Phone className="w-6 h-6 text-secondary mt-1" />
-                    <div>
-                      <h3 className="font-semibold mb-1">Téléphone</h3>
-                      <p className="text-blue-100">06 XX XX XX XX</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start space-x-4">
-                    <Mail className="w-6 h-6 text-secondary mt-1" />
-                    <div>
-                      <h3 className="font-semibold mb-1">Email</h3>
-                      <p className="text-blue-100">contact@perpignan-peinture.fr</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start space-x-4">
-                    <MapPin className="w-6 h-6 text-secondary mt-1" />
-                    <div>
-                      <h3 className="font-semibold mb-1">Zone d'intervention</h3>
-                      <p className="text-blue-100">Perpignan et alentours (66)</p>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="mt-12 pt-12 border-t border-primary-light">
-                  <h3 className="font-semibold mb-4">Suivez-nous</h3>
-                  <div className="flex space-x-4">
-                    <a href="#" className="text-white hover:text-secondary transition"><Instagram className="w-6 h-6" /></a>
-                    <a href="#" className="text-white hover:text-secondary transition"><Facebook className="w-6 h-6" /></a>
-                  </div>
-                </div>
-              </div>
-
-              <div className="p-12">
-                <form className="space-y-6">
-                  <div className="grid grid-cols-2 gap-6">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Nom</label>
-                      <input type="text" className="w-full px-4 py-3 bg-gray-50 border border-gray-200 focus:border-primary focus:ring-0 transition" />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Prénom</label>
-                      <input type="text" className="w-full px-4 py-3 bg-gray-50 border border-gray-200 focus:border-primary focus:ring-0 transition" />
-                    </div>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                    <input type="email" className="w-full px-4 py-3 bg-gray-50 border border-gray-200 focus:border-primary focus:ring-0 transition" />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Type de projet</label>
-                    <select className="w-full px-4 py-3 bg-gray-50 border border-gray-200 focus:border-primary focus:ring-0 transition">
-                      <option>Peinture Intérieure</option>
-                      <option>Ravalement de Façade</option>
-                      <option>Revêtement de Sol</option>
-                      <option>Autre</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Message</label>
-                    <textarea rows="4" className="w-full px-4 py-3 bg-gray-50 border border-gray-200 focus:border-primary focus:ring-0 transition"></textarea>
-                  </div>
-                  <button type="submit" className="w-full bg-primary text-white py-4 font-bold hover:bg-primary-dark transition tracking-wide">
-                    ENVOYER MA DEMANDE
-                  </button>
-                </form>
-              </div>
+          {/* Final Footer CTA */}
+          <div className="bg-primary rounded-3xl p-12 md:p-20 text-center relative overflow-hidden shadow-2xl">
+            <div className="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
+            <div className="relative z-10">
+              <h2 className="text-3xl md:text-5xl font-heading font-bold text-white mb-8">
+                Prêt à sublimer votre intérieur ?
+              </h2>
+              <p className="text-blue-100 text-lg mb-10 max-w-2xl mx-auto">
+                Contactez-nous dès aujourd'hui pour une estimation gratuite et sans engagement.
+              </p>
+              <a href="#contact" className="inline-block bg-secondary text-white px-10 py-5 rounded-full font-bold text-xl hover:bg-secondary-light transition shadow-lg hover:shadow-2xl transform hover:-translate-y-1 duration-300">
+                Commencer mon Projet
+              </a>
             </div>
           </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-white py-12 border-t border-gray-800">
+      <footer id="contact" className="bg-primary-dark text-white py-16 border-t border-gray-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-4 gap-8 mb-8">
+          <div className="grid md:grid-cols-4 gap-12 mb-12">
             <div className="col-span-1 md:col-span-2">
-              <span className="text-2xl font-serif font-bold text-white tracking-tight mb-4 block">
-                PERPIGNAN<span className="text-secondary">PEINTURE</span>
-              </span>
-              <p className="text-gray-400 max-w-sm">
+              <div className="flex items-center gap-3 mb-6">
+                <Paintbrush className="w-6 h-6 text-secondary" />
+                <span className="text-2xl font-heading font-bold tracking-tight">
+                  PERPIGNAN PEINTURE
+                </span>
+              </div>
+              <p className="text-gray-400 max-w-sm leading-relaxed">
                 Artisans peintres passionnés, nous mettons notre savoir-faire au service de vos projets de décoration et de rénovation dans les Pyrénées-Orientales.
               </p>
             </div>
             <div>
-              <h4 className="font-bold mb-4 text-secondary">Liens Rapides</h4>
-              <ul className="space-y-2 text-gray-400">
-                <li><a href="#home" className="hover:text-white transition">Accueil</a></li>
-                <li><a href="#residentiel" className="hover:text-white transition">Résidentiel</a></li>
-                <li><a href="#commercial" className="hover:text-white transition">Commercial</a></li>
-                <li><a href="#contact" className="hover:text-white transition">Contact</a></li>
+              <h4 className="font-bold mb-6 text-secondary uppercase tracking-wider text-sm">Contact</h4>
+              <ul className="space-y-4 text-gray-400">
+                <li className="flex items-center gap-3"><Phone className="w-5 h-5 text-secondary" /> 04 68 XX XX XX</li>
+                <li className="flex items-center gap-3"><Mail className="w-5 h-5 text-secondary" /> contact@perpignan-peinture.fr</li>
+                <li className="flex items-center gap-3"><MapPin className="w-5 h-5 text-secondary" /> Perpignan, France</li>
               </ul>
             </div>
             <div>
-              <h4 className="font-bold mb-4 text-secondary">Légal</h4>
+              <h4 className="font-bold mb-6 text-secondary uppercase tracking-wider text-sm">Légal</h4>
               <ul className="space-y-2 text-gray-400">
                 <li><a href="#" className="hover:text-white transition">Mentions Légales</a></li>
                 <li><a href="#" className="hover:text-white transition">Politique de Confidentialité</a></li>
@@ -296,23 +290,15 @@ function App() {
               </ul>
             </div>
           </div>
-          <div className="border-t border-gray-800 pt-8 text-center text-gray-500 text-sm">
+          <div className="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-gray-500 text-sm">
             <p>&copy; 2025 PERPIGNAN PEINTURE. Tous droits réservés.</p>
+            <div className="flex gap-6">
+              <a href="#" className="hover:text-secondary transition"><Instagram className="w-5 h-5" /></a>
+              <a href="#" className="hover:text-secondary transition"><Facebook className="w-5 h-5" /></a>
+            </div>
           </div>
         </div>
       </footer>
-    </div>
-  );
-}
-
-function FeatureCard({ icon, title, description }) {
-  return (
-    <div className="text-center p-6">
-      <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-surface mb-6">
-        {icon}
-      </div>
-      <h3 className="text-xl font-serif font-bold text-gray-900 mb-3">{title}</h3>
-      <p className="text-gray-600 leading-relaxed">{description}</p>
     </div>
   );
 }

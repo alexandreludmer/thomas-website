@@ -8,18 +8,24 @@ export default {
     extend: {
       colors: {
         primary: {
-          DEFAULT: '#991F26', // Deep Catalan Red (Sang)
-          light: '#B83239',
-          dark: '#701218',
+          DEFAULT: '#0f172a', // Deep Navy Blue
+          light: '#1e293b',
+          dark: '#020617',
         },
         secondary: {
-          DEFAULT: '#E5BE01', // Catalan Gold (Or)
-          light: '#F4D03F',
+          DEFAULT: '#cca43b', // Muted Gold / Brass
+          light: '#eecb68',
         },
-        surface: '#F9F9F9',
+        surface: '#f8fafc', // Off-White / Alabaster
+        text: {
+          DEFAULT: '#334155', // Dark Slate
+          dark: '#1e293b',
+          light: '#64748b',
+        }
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],
+        heading: ['Montserrat', 'sans-serif'],
         serif: ['Playfair Display', 'Georgia', 'serif'],
       },
     },
