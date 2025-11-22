@@ -1,10 +1,26 @@
-import React, { useState } from 'react';
-import { Phone, Mail, MapPin, Paintbrush, Home, Shield, ArrowRight, Star, CheckCircle2, Instagram, Facebook, Menu, X, Droplets, Clock, FileCheck, Sparkles, ChevronDown, MessageCircle } from 'lucide-react';
-import { motion } from 'framer-motion';
+import React, { useState, useEffect } from 'react';
+import { Phone, Mail, MapPin, Paintbrush, Home, Shield, ArrowRight, Star, CheckCircle2, Instagram, Facebook, Menu, X, Droplets, Clock, FileCheck, Sparkles, ChevronDown, MessageCircle, Users, Trophy, Calendar, Palette, Ruler, Hammer } from 'lucide-react';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import BeforeAfterSlider from './components/BeforeAfterSlider';
 
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { scrollY } = useScroll();
+  const y1 = useTransform(scrollY, [0, 500], [0, 200]);
+  const { scrollYProgress } = useScroll();
+  const [showScrollTop, setShowScrollTop] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowScrollTop(window.scrollY > 400);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   const fadeInUp = {
     hidden: { opacity: 0, y: 20 },
@@ -31,6 +47,12 @@ function App() {
 
   return (
     <div className="min-h-screen bg-surface font-sans text-text selection:bg-secondary selection:text-white">
+      {/* Scroll Progress Bar */}
+      <motion.div
+        className="fixed top-0 left-0 right-0 h-1 bg-catalan-red origin-left z-50"
+        style={{ scaleX: scrollYProgress }}
+      />
+
       {/* A. Header / Navigation (Sticky) */}
       <header className="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-md border-b border-gray-100 shadow-sm transition-all duration-300">
         {/* Catalan Strip (Sang et Or) */}
@@ -101,11 +123,14 @@ function App() {
 
       {/* B. Hero Section (Above the Fold) */}
       <section id="accueil" className="relative pt-20 min-h-screen flex items-center overflow-hidden">
-        {/* Background Image */}
-        <div
+        {/* Background Image with Parallax */}
+        <motion.div
           className="absolute inset-0 bg-cover bg-center z-0"
-          style={{ backgroundImage: "url('https://images.unsplash.com/photo-1562663474-6cbb3eaa4d14?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80')" }}
-        ></div>
+          style={{
+            backgroundImage: "url('https://images.unsplash.com/photo-1562663474-6cbb3eaa4d14?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80')",
+            y: y1
+          }}
+        />
         {/* Overlay */}
         <div className="absolute inset-0 bg-primary/40 z-10"></div>
 
@@ -143,7 +168,7 @@ function App() {
       </section>
 
       {/* C. The "Insurance Trust" Bar */}
-      <section id="assurances" className="bg-gray-100 border-b border-gray-200 py-8">
+      <section id="assurances" className="bg-gray-100 border-b border-gray-200 py-8 relative z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row items-center justify-between gap-8">
             <p className="text-text-light font-medium text-sm md:text-base uppercase tracking-wider text-center md:text-left">
@@ -158,6 +183,46 @@ function App() {
               <span className="font-heading font-bold text-xl text-gray-500">GROUPAMA</span>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* NEW SECTION: Key Statistics (Animated) */}
+      <section className="py-16 bg-primary text-white relative overflow-hidden">
+        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-20"></div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+            <div className="p-4">
+              <div className="text-4xl md:text-5xl font-heading font-bold text-secondary mb-2">15+</div>
+              <div className="text-sm md:text-base text-gray-300 uppercase tracking-wider font-medium">Années d'Expérience</div>
+            </div>
+            <div className="p-4">
+              <div className="text-4xl md:text-5xl font-heading font-bold text-secondary mb-2">500+</div>
+              <div className="text-sm md:text-base text-gray-300 uppercase tracking-wider font-medium">Chantiers Réalisés</div>
+            </div>
+            <div className="p-4">
+              <div className="text-4xl md:text-5xl font-heading font-bold text-secondary mb-2">100%</div>
+              <div className="text-sm md:text-base text-gray-300 uppercase tracking-wider font-medium">Clients Satisfaits</div>
+            </div>
+            <div className="p-4">
+              <div className="text-4xl md:text-5xl font-heading font-bold text-secondary mb-2">10</div>
+              <div className="text-sm md:text-base text-gray-300 uppercase tracking-wider font-medium">Garantie Décennale</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* NEW SECTION: Manifesto / Philosophy */}
+      <section className="py-20 bg-white">
+        <div className="max-w-4xl mx-auto px-4 text-center">
+          <Sparkles className="w-12 h-12 text-secondary mx-auto mb-6" />
+          <h2 className="text-3xl md:text-4xl font-heading font-bold text-primary mb-8">Plus qu'un Peintre, un Partenaire</h2>
+          <p className="text-xl text-text-light leading-relaxed italic font-serif">
+            "Chez Perpignan Peinture, nous croyons que chaque mur a une histoire à raconter. Notre mission n'est pas seulement d'appliquer de la couleur, mais de révéler le potentiel de votre habitat. Nous allions techniques traditionnelles et matériaux modernes pour un résultat qui traverse le temps."
+          </p>
+          <div className="mt-8 flex justify-center">
+            <div className="h-1 w-24 bg-gradient-to-r from-catalan-red to-catalan-yellow rounded-full"></div>
+          </div>
+          <p className="mt-4 text-sm font-bold text-primary uppercase tracking-widest">Thomas, Fondateur</p>
         </div>
       </section>
 
@@ -312,7 +377,7 @@ function App() {
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-heading font-bold text-primary mb-4">Questions Fréquentes</h2>
           </div>
-          
+
           <div className="space-y-4">
             {faqs.map((faq, index) => (
               <details key={index} className="group bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
@@ -331,6 +396,66 @@ function App() {
         </div>
       </section>
 
+      {/* NEW SECTION: Material Showcase (Qualitative Touch) */}
+      <section className="py-24 bg-white overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid md:grid-cols-2 gap-16 items-center">
+            <div>
+              <h2 className="text-3xl md:text-4xl font-heading font-bold text-primary mb-6">L'Art de la Matière</h2>
+              <p className="text-text-light text-lg mb-8 leading-relaxed">
+                La peinture n'est pas qu'une couleur, c'est une texture, un toucher, une profondeur. Nous sélectionnons les pigments les plus fins et les enduits les plus nobles pour créer des surfaces qui accrochent la lumière.
+              </p>
+
+              <div className="space-y-8">
+                <div className="flex gap-6">
+                  <div className="w-20 h-20 rounded-full bg-gray-100 flex-shrink-0 overflow-hidden border-2 border-secondary">
+                    <img src="https://images.unsplash.com/photo-1562663474-6cbb3eaa4d14?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="Texture Mat" className="w-full h-full object-cover" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-primary mb-2">Mat Profond</h3>
+                    <p className="text-sm text-text-light">Idéal pour les plafonds et salons feutrés. Absorbe la lumière pour une ambiance cocooning et masque les imperfections.</p>
+                  </div>
+                </div>
+
+                <div className="flex gap-6">
+                  <div className="w-20 h-20 rounded-full bg-gray-100 flex-shrink-0 overflow-hidden border-2 border-catalan-yellow">
+                    <img src="https://images.unsplash.com/photo-1595428774223-ef52624120d2?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="Texture Satin" className="w-full h-full object-cover" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-primary mb-2">Velours Soyeux</h3>
+                    <p className="text-sm text-text-light">Le compromis parfait. Un toucher soyeux, lessivable et résistant, parfait pour les pièces de vie et couloirs.</p>
+                  </div>
+                </div>
+
+                <div className="flex gap-6">
+                  <div className="w-20 h-20 rounded-full bg-gray-100 flex-shrink-0 overflow-hidden border-2 border-catalan-red">
+                    <img src="https://images.unsplash.com/photo-1615529182904-14819c35db37?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="Texture Stuc" className="w-full h-full object-cover" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-primary mb-2">Effets Décoratifs</h3>
+                    <p className="text-sm text-text-light">Chaux, béton ciré, stuc... Des finitions artisanales pour donner du caractère et de l'authenticité à vos murs.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="relative h-[600px] rounded-2xl overflow-hidden shadow-2xl group">
+              <img
+                src="https://images.unsplash.com/photo-1594040226829-7f251ab46d80?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+                alt="Application Peinture"
+                className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-primary/80 to-transparent flex items-end p-8">
+                <div className="text-white">
+                  <p className="font-serif italic text-2xl mb-2">"Le détail fait la perfection, et la perfection n'est pas un détail."</p>
+                  <p className="text-sm opacity-80 uppercase tracking-widest">Léonard de Vinci</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* F. Testimonials & CTA */}
       <section className="py-24 bg-surface overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -345,6 +470,26 @@ function App() {
             </h2>
             <p className="font-bold text-text">Sophie & Marc L.</p>
             <p className="text-sm text-text-light">Propriétaires à Canet-en-Roussillon</p>
+          </div>
+
+          {/* NEW SECTION: Intervention Zone (Marquee/List) */}
+          <div className="mb-24 border-t border-b border-gray-200 py-12">
+            <div className="text-center mb-8">
+              <h3 className="text-xl font-heading font-bold text-primary uppercase tracking-widest">Nous intervenons dans tout le 66</h3>
+            </div>
+            <div className="flex flex-wrap justify-center gap-4 md:gap-8 text-gray-400 font-medium uppercase tracking-wider text-sm md:text-base">
+              <span className="flex items-center gap-2"><MapPin className="w-4 h-4 text-catalan-red" /> Perpignan</span>
+              <span className="hidden md:inline text-gray-300">•</span>
+              <span className="flex items-center gap-2"><MapPin className="w-4 h-4 text-catalan-yellow" /> Canet-en-Roussillon</span>
+              <span className="hidden md:inline text-gray-300">•</span>
+              <span className="flex items-center gap-2"><MapPin className="w-4 h-4 text-catalan-red" /> Saint-Cyprien</span>
+              <span className="hidden md:inline text-gray-300">•</span>
+              <span className="flex items-center gap-2"><MapPin className="w-4 h-4 text-catalan-yellow" /> Argelès-sur-Mer</span>
+              <span className="hidden md:inline text-gray-300">•</span>
+              <span className="flex items-center gap-2"><MapPin className="w-4 h-4 text-catalan-red" /> Cabestany</span>
+              <span className="hidden md:inline text-gray-300">•</span>
+              <span className="flex items-center gap-2"><MapPin className="w-4 h-4 text-catalan-yellow" /> Rivesaltes</span>
+            </div>
           </div>
 
           {/* Final Footer CTA */}
@@ -368,6 +513,104 @@ function App() {
       {/* Footer */}
       <footer id="contact" className="bg-primary-dark text-white py-16 border-t border-gray-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Enhanced Contact Form Section */}
+          <div className="bg-white rounded-2xl shadow-2xl overflow-hidden mb-16 transform -translate-y-24 border-4 border-secondary/20">
+            <div className="grid md:grid-cols-2">
+              <div className="p-12 bg-surface text-text">
+                <h3 className="text-2xl font-heading font-bold text-primary mb-6">Contactez-nous</h3>
+                <p className="text-text-light mb-8">Remplissez ce formulaire pour recevoir votre devis gratuit sous 48h.</p>
+
+                <form className="space-y-6">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-bold text-gray-700 mb-2">Nom</label>
+                      <input type="text" className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:border-secondary focus:ring-2 focus:ring-secondary/20 outline-none transition" placeholder="Votre nom" />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-bold text-gray-700 mb-2">Téléphone</label>
+                      <input type="tel" className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:border-secondary focus:ring-2 focus:ring-secondary/20 outline-none transition" placeholder="06..." />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-bold text-gray-700 mb-2">Type de Projet</label>
+                    <div className="grid grid-cols-3 gap-3">
+                      <label className="cursor-pointer">
+                        <input type="radio" name="projectType" className="peer sr-only" />
+                        <div className="p-3 rounded-lg border border-gray-200 text-center hover:bg-gray-50 peer-checked:border-secondary peer-checked:bg-secondary/10 peer-checked:text-primary transition">
+                          <Paintbrush className="w-6 h-6 mx-auto mb-1 text-gray-400 peer-checked:text-secondary" />
+                          <span className="text-xs font-bold">Peinture</span>
+                        </div>
+                      </label>
+                      <label className="cursor-pointer">
+                        <input type="radio" name="projectType" className="peer sr-only" />
+                        <div className="p-3 rounded-lg border border-gray-200 text-center hover:bg-gray-50 peer-checked:border-secondary peer-checked:bg-secondary/10 peer-checked:text-primary transition">
+                          <Home className="w-6 h-6 mx-auto mb-1 text-gray-400 peer-checked:text-secondary" />
+                          <span className="text-xs font-bold">Rénovation</span>
+                        </div>
+                      </label>
+                      <label className="cursor-pointer">
+                        <input type="radio" name="projectType" className="peer sr-only" />
+                        <div className="p-3 rounded-lg border border-gray-200 text-center hover:bg-gray-50 peer-checked:border-secondary peer-checked:bg-secondary/10 peer-checked:text-primary transition">
+                          <Droplets className="w-6 h-6 mx-auto mb-1 text-gray-400 peer-checked:text-secondary" />
+                          <span className="text-xs font-bold">Sinistre</span>
+                        </div>
+                      </label>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-bold text-gray-700 mb-2">Message</label>
+                    <textarea rows="3" className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:border-secondary focus:ring-2 focus:ring-secondary/20 outline-none transition" placeholder="Décrivez brièvement votre projet..."></textarea>
+                  </div>
+
+                  <button type="submit" className="w-full bg-primary text-white py-4 rounded-lg font-bold text-lg hover:bg-primary-light transition shadow-lg flex items-center justify-center gap-2">
+                    Envoyer ma Demande <ArrowRight className="w-5 h-5" />
+                  </button>
+                </form>
+              </div>
+
+              <div className="p-12 bg-primary relative overflow-hidden flex flex-col justify-between">
+                <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1589939705384-5185137a7f0f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80')] bg-cover bg-center opacity-20"></div>
+                <div className="relative z-10">
+                  <h3 className="text-2xl font-heading font-bold text-white mb-6">Coordonnées</h3>
+                  <ul className="space-y-6">
+                    <li className="flex items-start gap-4">
+                      <div className="bg-white/10 p-3 rounded-lg backdrop-blur-sm">
+                        <Phone className="w-6 h-6 text-secondary" />
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-400 uppercase tracking-wider font-bold">Téléphone</p>
+                        <p className="text-xl font-bold">04 68 XX XX XX</p>
+                        <p className="text-sm text-gray-400">Lun - Ven: 8h - 19h</p>
+                      </div>
+                    </li>
+                    <li className="flex items-start gap-4">
+                      <div className="bg-white/10 p-3 rounded-lg backdrop-blur-sm">
+                        <Mail className="w-6 h-6 text-secondary" />
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-400 uppercase tracking-wider font-bold">Email</p>
+                        <p className="text-lg">contact@perpignan-peinture.fr</p>
+                        <p className="text-sm text-gray-400">Réponse sous 24h</p>
+                      </div>
+                    </li>
+                    <li className="flex items-start gap-4">
+                      <div className="bg-white/10 p-3 rounded-lg backdrop-blur-sm">
+                        <MapPin className="w-6 h-6 text-secondary" />
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-400 uppercase tracking-wider font-bold">Siège Social</p>
+                        <p className="text-lg">Perpignan, France</p>
+                        <p className="text-sm text-gray-400">Intervention dans tout le 66</p>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <div className="grid md:grid-cols-4 gap-12 mb-12">
             <div className="col-span-1 md:col-span-2">
               <div className="flex items-center gap-3 mb-6">
@@ -408,16 +651,27 @@ function App() {
       </footer>
 
       {/* NEW: Floating Action Button (Mobile/Desktop) */}
-      <a 
-        href="tel:0600000000" 
-        className="fixed bottom-6 right-6 z-50 bg-catalan-red text-white p-4 rounded-full shadow-2xl hover:scale-110 transition-transform duration-300 flex items-center gap-2 group border-2 border-white"
-        aria-label="Appeler maintenant"
-      >
-        <Phone className="w-6 h-6 fill-current" />
-        <span className="max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-500 ease-in-out whitespace-nowrap font-bold">
-          Appeler
-        </span>
-      </a>
+      <div className="fixed bottom-6 right-6 z-50 flex flex-col gap-4">
+        {/* Back to Top Button */}
+        <motion.button
+          initial={{ opacity: 0, scale: 0 }}
+          animate={{ opacity: showScrollTop ? 1 : 0, scale: showScrollTop ? 1 : 0 }}
+          onClick={scrollToTop}
+          className="bg-white text-primary p-4 rounded-full shadow-lg hover:bg-gray-50 transition-colors border border-gray-100"
+          aria-label="Retour en haut"
+        >
+          <ArrowRight className="w-6 h-6 -rotate-90" />
+        </motion.button>
+
+        {/* Call Button */}
+        <a
+          href="tel:0468XXXXXX"
+          className="bg-secondary text-white p-4 rounded-full shadow-lg hover:bg-secondary-light transition-colors animate-bounce-slow flex items-center justify-center"
+          aria-label="Appeler maintenant"
+        >
+          <Phone className="w-6 h-6" />
+        </a>
+      </div>
     </div>
   );
 }
