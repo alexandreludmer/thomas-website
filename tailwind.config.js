@@ -21,6 +21,10 @@ export default {
           DEFAULT: '#334155', // Dark Slate
           dark: '#1e293b',
           light: '#64748b',
+        },
+        catalan: {
+          red: '#DA121A', // Sang
+          yellow: '#FCDD09', // Or
         }
       },
       fontFamily: {
